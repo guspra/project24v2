@@ -13,7 +13,7 @@ import io from 'socket.io-client/dist/socket.io';
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('chatWindow') private viewer: ElementRef;
-  url = `http://localhost:2424`;
+  url = `http://172.104.161.63:2424`;
   socket;
   form: FormGroup;
   conversation = [];
