@@ -1,0 +1,19 @@
+<!-- <p>
+  dashboard works!
+</p> -->
+
+<!-- <p><strong>' + data.handle + ': </strong>' + data.message + '</p>'; -->
+<form id="mario-chat" [formGroup]="form">
+  <h2 align='center'> Chat Room</h2>
+  <div id="chat-window" #chatWindow>
+    <div id="output" *ngFor="let chatData of conversation">
+      <p *ngIf="username !== chatData.handle"><strong>{{chatData.handle}}</strong> &nbsp;{{chatData.message}} </p>
+      <p class="text-right" *ngIf="username === chatData.handle"> {{chatData.message}} <strong style="color:red;">&nbsp;You</strong></p>
+      <!-- {{username === chatData.handle}} -->
+    </div>
+    <div id="feedback" class="text-muted">&nbsp;{{typingStatus}}</div>
+  </div>
+  <input id="handle" type="text" placeholder="Handle" name="handle" formControlName="handle" disabled/>
+  <input id="message" type="text" placeholder="Message" name="message" formControlName="message" (keypress)="listenKeypress()" />
+  <button id="send" href="#" (click)="sendMessage()">Send</button>
+</form>

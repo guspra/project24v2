@@ -1,0 +1,152 @@
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-8">
+      <!-- <button type="button" class="btn btn-info" *ngIf="!newTweet" (click)="newTweetClicked()">New Tweet</button>&nbsp; -->
+      <button type="button" class="btn btn-success" *ngIf="!newTweet" (click)="getAllTweets()">  <span data-feather="home"></span>Refresh Tweets <i data-feather="circle"></i></button>
+      <br/><br/>
+      <i data-feather="circle"></i>
+      <div class="alert alert-info" role="alert" *ngIf="tweetPosted">
+        Tweet posted!
+      </div>
+      <form [formGroup]="form" name="tweetForm" (submit)="submitTweetForm()">
+        <!-- Body Input -->
+        <div class="form-group">
+          <div>
+            <!-- Body Input -->
+            <textarea name="body" formControlName="body" rows="4" cols="80" placeholder="5 - 500 characters" class="form-control" [ngClass]="{'is-valid': form.controls.body.valid, 'is-invalid': form.controls.body.dirty && form.controls.body.errors}"></textarea>
+            <div class="invalid-feedback" *ngIf="form.controls.body.dirty && form.controls.body.errors?.required">This field is required.</div>
+            <div class="invalid-feedback" *ngIf="(form.controls.body.dirty && form.controls.body.errors?.minlength) || (form.controls.body.dirty && form.controls.body.errors?.maxlength)">Must be 5 - 500 characters</div>
+          </div>
+        </div>
+        <!-- <button type="button" name="button" (click)="goBack()" class="btn btn-outline-warning">Go Back</button> &nbsp; -->
+        <button [disabled]="!form.valid" type="submit" name="button" class="btn btn-info float-right"> <i data-feather="circle"></i> Tweet!</button>
+      </form>
+    </div>
+  </div>
+  <br/>
+
+  <div class="row justify-content-md-center" *ngIf="!newTweet">
+    <div class="col-md-8" *ngFor="let tweet of tweets">
+      <!-- style="max-width: 18rem;" -->
+      <div class="card border-info mb-3">
+        <!-- <div class="card-header">Header</div> -->
+        <div class="card-body text-info">
+          <!-- <h5 class="card-title">Info card title</h5> -->
+          <p class="card-text">
+            {{tweet.body}}
+          </p>
+        </div>
+
+        <!-- Button trigger modal -->
+        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    Comment
+                  </button> -->
+        <div class="card-footer bg-transparent">
+          <div class="row">
+            <div class="col-sm-6">
+              <!-- <a href="" (click)="likeTweet(tweet._id)">Like</a> &nbsp;<small class="text-muted">(10)</small> &nbsp;&nbsp;
+              <a href="">Comment</a> &nbsp;<small class="text-muted">(15)</small> -->
+              <button (click)="likeTweet(tweet._id)" type="button" class="btn btn-outline-primary" *ngIf="tweet.likedBy.indexOf(username) < 0">Like ({{tweet.likedBy.length}})</button>
+              <button (click)="unlikeTweet(tweet._id)" type="button" class="btn btn-primary" *ngIf="tweet.likedBy.indexOf(username) >= 0">Unlike ({{tweet.likedBy.length}})</button> &nbsp;
+              <button type="button" class="btn" (click)="showComment(tweet._id)" [disabled]="commentShow.indexOf(tweet._id) >= 0" [ngClass]="{'btn-primary': commentShow.indexOf(tweet._id) >= 0, 'btn-outline-primary': commentShow.indexOf(tweet._id) < 0}">Comments ({{tweet.comments.length}})</button>
+            </div>
+            <div class="col-sm-6">
+              <p class="card-text text-right"><small class="text-muted">By @{{tweet.createdBy}} &nbsp; {{tweet.createdAt | date:'hh:mm dd MMM' }}</small></p>
+            </div>
+          </div>
+        </div>
+        <!-- ^ end of first card footer -->
+
+
+        <!-- start of comment section -->
+        <div class="card-footer bg-transparent" *ngIf="commentShow.indexOf(tweet._id) >= 0">
+          <div class="my-0 p-0 bg-white rounded box-shadow">
+            <!-- <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6> -->
+            <div class="media text-muted pt-0" *ngFor="let comment of tweet.comments">
+              <p class="media-body pb-1 mb-0 small lh-125 border-bottom border-gray">
+                <strong class="d-block text-gray-dark">@{{comment.commentator}}</strong> {{comment.comment}}
+              </p>
+            </div>
+          </div>
+
+          <form [formGroup]="formComment" name="tweetForm" (submit)="submitCommentForm(tweet._id)" class="mt-2">
+            <!-- Body Input -->
+            <div class="form-group">
+              <div>
+                <!-- Body Input -->
+                <textarea name="bodyComment" formControlName="bodyComment" rows="4" cols="80" placeholder="2 - 200 characters" class="form-control" [ngClass]="{'is-valid': formComment.controls.bodyComment.valid, 'is-invalid': formComment.controls.bodyComment.dirty && formComment.controls.bodyComment.errors}"></textarea>
+                <div class="invalid-feedback" *ngIf="formComment.controls.bodyComment.dirty && formComment.controls.bodyComment.errors?.required">This field is required.</div>
+                <div class="invalid-feedback" *ngIf="(formComment.controls.bodyComment.dirty && formComment.controls.bodyComment.errors?.minlength) || (formComment.controls.bodyComment.dirty && formComment.controls.bodyComment.errors?.maxlength)">Must be 2 - 200 characters</div>
+              </div>
+            </div>
+            <!-- <button type="button" name="button" (click)="goBack()" class="btn btn-outline-warning">Go Back</button> &nbsp; -->
+            <button [disabled]="!formComment.valid" type="submit" name="button" class="btn btn-info float-right"> <i data-feather="circle"></i> Comment!</button>
+          </form>
+
+        </div>
+        <!-- ^ end of second card footer -->
+
+
+      </div>
+
+    </div>
+    <!-- end of tweets iteration -->
+
+
+
+  </div>
+  <br/>
+  <div class="row  justify-content-md-center">
+    <button class="btn btn-info" (click)="loadMoreTweet()">  Load More Tweets!</button>
+  </div>
+  <br/><br/>
+  <!-- ^ end of row tweets -->
+
+</div>
+
+
+
+
+
+
+
+
+<!-- end of form -->
+<!-- *ngFor="let tweet of tweets" -->
+<!-- <div class="card-deck mb-3 text-left" *ngIf="!newTweet">
+  <div class="card mb-4 box-shadow">
+    <div class="card-header">
+      <h5 class="my-0 font-weight-normal">{{tweet.createdBy}}</h5>
+    </div>
+    <div class="card-body">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <button type="button" class="btn btn-outline-primary">Like (10)</button> &nbsp;
+      <button type="button" class="btn btn-outline-primary">Comment (1)</button>
+    </div>
+  </div>
+
+  <div class="card mb-4 box-shadow">
+    <div class="card-header">
+      <h5 class="my-0 font-weight-normal">{{tweet.createdBy}}</h5>
+    </div>
+    <div class="card-body">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <button type="button" class="btn btn-outline-primary">Like (10)</button> &nbsp;
+      <button type="button" class="btn btn-outline-primary">Comment (1)</button>
+    </div>
+  </div>
+
+  <div class="card border-info mb-3" style="max-width: 18rem;">
+    <div class="card-header">Header</div>
+    <div class="card-body text-info">
+      <h5 class="card-title">Info card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+  </div>
+</div> -->

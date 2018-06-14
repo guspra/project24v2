@@ -1,0 +1,11 @@
+sign up github
+download git
+download cmder
+download atom
+install node js
+install express (framework for node.js) ---> npm install express --save 
+install nodemon (Utilities to auto restart server to detect changes in code) ---> npm install -g nodemon
+download install mongodb
+download install robomongo
+npm install mongoose --safe
+install angular  ---> https://cli.angular.io/ 

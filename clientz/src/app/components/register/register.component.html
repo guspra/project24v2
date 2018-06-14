@@ -1,0 +1,65 @@
+<h1 class="page-header">Register Page</h1>
+
+<form [formGroup]="form" (submit)="onRegisterSubmit()">
+  <div class="form-row">
+    <div class="form-group col-md-12 show-hide-message">
+      <!-- <div [ngClass]="messageClass"> -->
+      <div class="alert" [ngClass]="messageClass">
+        {{ message }}
+        <!-- Hore data berhasil disimpan -->
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label>Email</label>
+      <input type="email" class="form-control" placeholder="Email" name="email" formControlName="email" [ngClass]="{'is-invalid': (form.controls.email.errors && form.controls.email.dirty) || (!emailValid && form.controls.email.dirty), 'is-valid': !form.controls.email.errors}"
+        (keyup)="checkEmail()">
+      <!-- <div class="valid-feedback"> Looks good!</div> -->
+      <div *ngIf="form.controls.email.errors?.required && form.controls.email.dirty" class="invalid-feedback">Email cannot be empty</div>
+      <div *ngIf="form.controls.email.errors?.validateEmail && form.controls.email.dirty" class="invalid-feedback">This must be a valid e-mail</div>
+      <div *ngIf="!emailSuccess" class="invalid-feedback">{{ emailMessage}}</div>
+    </div>
+    <div class="form-group col-md-4">
+      <label>Password</label>
+      <input type="password" class="form-control" placeholder="Password" name="password" formControlName="password" [ngClass]="{'is-invalid': (form.controls.password.errors && form.controls.password.dirty), 'is-valid': !form.controls.password.errors}">
+      <div *ngIf="form.controls.password.errors?.required && form.controls.password.dirty" class="invalid-feedback">Password cannot be empty</div>
+    </div>
+    <div class="form-group col-md-4">
+      <label>Confirm Password</label>
+      <input type="password" class="form-control" placeholder="Confirm Password" name="confirmPassword" formControlName="confirmPassword" [ngClass]="{'is-invalid': (form.controls.confirmPassword.errors && form.controls.confirmPassword.dirty) || (form.errors?.validateConfirmPassword && form.controls.confirmPassword.dirty), 'is-valid': !form.controls.confirmPassword.errors}">
+      <div *ngIf="form.controls.confirmPassword.errors?.required && form.controls.confirmPassword.dirty" class="invalid-feedback">Confirm Password cannot be empty</div>
+      <div *ngIf="form.errors?.validateConfirmPassword && form.controls.confirmPassword.dirty" class="invalid-feedback">Password doesn't match</div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Username</label>
+      <input type="text" class="form-control" placeholder="Username" name="username" formControlName="username" [ngClass]="{'is-invalid': (form.controls.username.errors && form.controls.username.dirty) || (!usernameSuccess && form.controls.username.dirty), 'is-valid': !form.controls.username.errors}"
+        (keyup)="checkUsername()">
+      <!-- <div class="invalid-feedback">Please choose a username. </div> -->
+      <div *ngIf="form.controls.username.errors?.required && form.controls.username.dirty" class="invalid-feedback">Username cannot be empty</div>
+      <div *ngIf="form.controls.username.errors?.validateUsername && form.controls.username.dirty" class="invalid-feedback">Username is not valid</div>
+      <div *ngIf="form.controls.username.dirty && (form.controls.username.errors?.minlength || form.controls.username.errors?.maxlength)" class="invalid-feedback">Min char: 3, Max char: 15</div>
+      <div *ngIf="!usernameSuccess" class="invalid-feedback">{{ usernameMessage}}</div>
+    </div>
+    <div class="form-group col-md-3">
+      <label>Gender</label>
+      <select class="form-control" name="gender" formControlName="gender">
+        <option selected>Choose Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label>Age</label>
+      <input type="text" class="form-control" placeholder="Age: 10-100" name="age" formControlName="age" [ngClass]="{'is-invalid': (form.controls.age.errors && form.controls.age.dirty), 'is-valid': !form.controls.age.errors}">
+      <div *ngIf="form.controls.age.errors?.required && form.controls.age.dirty" class="invalid-feedback">Age cannot be empty</div>
+      <div *ngIf="form.controls.age.errors?.validateAge && form.controls.age.dirty" class="invalid-feedback">Age is not valid</div>
+    </div>
+  </div>
+  <button [disabled]="!form.valid" type="submit" class="btn btn-primary">Register</button>
+</form>
+
+<!-- <p> Username yang anda ketik: {{ form.controls.gender.value }}</p> -->
