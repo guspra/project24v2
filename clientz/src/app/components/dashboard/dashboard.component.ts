@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 // import io from 'socket.io-client';
 // import * as io from 'socket.io-client';
 import io from 'socket.io-client/dist/socket.io';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     // console.log(this.authService.getProfile());
 
@@ -41,7 +43,13 @@ export class DashboardComponent implements OnInit {
       this.scroll();
     });
     this.authService.getProfile().subscribe(profile => {
-      this.setUsername(profile.user.username);
+      if(profile.user){
+        this.setUsername(profile.user.username);
+      } else{
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      }
+
     });
   }
 

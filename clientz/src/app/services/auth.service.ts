@@ -12,6 +12,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
 
   domain = "http://172.104.161.63:2424"; // Development Domain - Not Needed in Production
+  // domain = "http://localhost:2424";
   authToken;
   user;
   options;

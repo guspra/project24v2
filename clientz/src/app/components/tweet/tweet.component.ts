@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { TweetService } from '../../services/tweet.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tweet',
@@ -17,14 +18,15 @@ export class TweetComponent implements OnInit {
   username;
   newTweet = false;
   tweetPosted = false;
-  tweets;
+  tweets = [];
   commentShow = [];
   tweetsLimit = 10;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private tweetService: TweetService
+    private tweetService: TweetService,
+    private router: Router
   ) {
     this.createNewTweetForm();
     this.createNewCommentForm();
@@ -142,10 +144,18 @@ xxx(){
   console.log(this.tweets);
 }
   ngOnInit() {
-this.getAllTweets();
+
     this.authService.getProfile().subscribe(profile => {
-      this.username = profile.user.username; // Used when creating new tweet posts and comments
+      if(profile.user){
+        this.username = profile.user.username; // Used when creating new tweet posts and comments
+      } else{
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      }
+
     });
+
+    this.getAllTweets();
 
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -12,15 +13,23 @@ export class ProfileComponent implements OnInit {
   email = 'Something error, go check your code';
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
       this.authService.getProfile().subscribe(profile => {
         // console.log('init di profile component ISI DARI profile');
         // console.log(profile);
-        this.username = profile.user.username;
-        this.email = profile.user.email;
+
+
+        if(profile.user){
+          this.username = profile.user.username;
+          this.email = profile.user.email;
+        } else {
+          this.authService.logout();
+          this.router.navigate(['/login']);
+        }
       });
   }
 

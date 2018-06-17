@@ -30,7 +30,8 @@
       <!-- style="max-width: 18rem;" -->
       <div class="card border-info mb-3">
         <!-- <div class="card-header">Header</div> -->
-        <div class="card-body text-info">
+        <!-- <div class="card-body text-info"> -->
+        <div class="card-body">
           <!-- <h5 class="card-title">Info card title</h5> -->
           <p class="card-text">
             {{tweet.body}}
@@ -46,9 +47,9 @@
             <div class="col-sm-6">
               <!-- <a href="" (click)="likeTweet(tweet._id)">Like</a> &nbsp;<small class="text-muted">(10)</small> &nbsp;&nbsp;
               <a href="">Comment</a> &nbsp;<small class="text-muted">(15)</small> -->
-              <button (click)="likeTweet(tweet._id)" type="button" class="btn btn-outline-primary" *ngIf="tweet.likedBy.indexOf(username) < 0">Like ({{tweet.likedBy.length}})</button>
-              <button (click)="unlikeTweet(tweet._id)" type="button" class="btn btn-primary" *ngIf="tweet.likedBy.indexOf(username) >= 0">Unlike ({{tweet.likedBy.length}})</button> &nbsp;
-              <button type="button" class="btn" (click)="showComment(tweet._id)" [disabled]="commentShow.indexOf(tweet._id) >= 0" [ngClass]="{'btn-primary': commentShow.indexOf(tweet._id) >= 0, 'btn-outline-primary': commentShow.indexOf(tweet._id) < 0}">Comments ({{tweet.comments.length}})</button>
+              <button (click)="likeTweet(tweet._id)" type="button" class="btn btn-outline-primary btn-sm" *ngIf="tweet.likedBy.indexOf(username) < 0">Like ({{tweet.likedBy.length}})</button>
+              <button (click)="unlikeTweet(tweet._id)" type="button" class="btn btn-primary btn-sm" *ngIf="tweet.likedBy.indexOf(username) >= 0">Unlike ({{tweet.likedBy.length}})</button> &nbsp;
+              <button type="button" class="btn btn-sm" (click)="showComment(tweet._id)" [disabled]="commentShow.indexOf(tweet._id) >= 0" [ngClass]="{'btn-primary': commentShow.indexOf(tweet._id) >= 0, 'btn-outline-primary': commentShow.indexOf(tweet._id) < 0}">Comments ({{tweet.comments.length}})</button>
             </div>
             <div class="col-sm-6">
               <p class="card-text text-right"><small class="text-muted">By @{{tweet.createdBy}} &nbsp; {{tweet.createdAt | date:'hh:mm dd MMM' }}</small></p>
@@ -96,7 +97,7 @@
 
   </div>
   <br/>
-  <div class="row  justify-content-md-center">
+  <div class="row  justify-content-md-center" *ngIf="tweets.length === tweetsLimit">
     <button class="btn btn-info" (click)="loadMoreTweet()">  Load More Tweets!</button>
   </div>
   <br/><br/>
